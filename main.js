@@ -11,6 +11,8 @@ const colors = {
 
 const config = {
 	rowHeight: 10, // Specification in pixels
+	maxRowLength: 200,
+	maxRowAmount: 10,
 	spacing: 20, //Specification in pixels
 };
 
@@ -39,17 +41,25 @@ function draw() {
 	ctx.fillRect(0, 0, width, height);
 
 	for (let i = 0; i < rows; i++) {
-		let randomNumber = Math.floor(Math.random() * (colors.array.length - 1));
-		let color = colors.array[randomNumber];
-		console.log('Random Number: ', randomNumber);
-		drawRow(
-			ctx,
-			config.spacing,
-			config.spacing + i * (config.spacing * 2 + config.rowHeight),
-			config.rowHeight,
-			Math.floor(Math.random() * (1000 - config.spacing * 2) + 10),
-			color
-		);
+		console.log('--------New Row--------');
+		let rowAmount = Math.floor(Math.random() * config.maxRowAmount + 1);
+		console.log('Row Amount: ', rowAmount);
+		let overallLenght = config.spacing;
+		for (let i2 = 0; i2 < rowAmount; i2++) {
+			let rowLength = Math.floor(Math.random() * (config.maxRowLength - config.spacing * 2) + 10);
+			if (overallLenght + rowLength + config.spacing > width) break;
+			drawRow(
+				ctx,
+				overallLenght,
+				config.spacing + i * (config.spacing * 2 + config.rowHeight),
+				config.rowHeight,
+				rowLength,
+				colors.array[Math.floor(Math.random() * (colors.array.length - 1))]
+			);
+			overallLenght += rowLength + config.spacing * 2;
+			console.log('Overall Lenght: ', overallLenght);
+		}
+		console.log('--------Row End--------');
 	}
 }
 
@@ -64,7 +74,18 @@ window.addEventListener('resize', (e) => {
 draw();
 
 function drawRow(ctx, x, y, rowHeight, rowLength, color) {
-	console.log('X:', x, ' Y:', y, ' Row Height:', rowHeight, ' Color:', color);
+	console.log(
+		'X:',
+		x,
+		' Y:',
+		y,
+		'Row Lenght:',
+		rowLength,
+		' Row Height:',
+		rowHeight,
+		' Color:',
+		color
+	);
 	ctx.fillStyle = color;
 	ctx.beginPath();
 	ctx.arc(x, y, rowHeight, 0, 2 * Math.PI);
