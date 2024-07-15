@@ -4,4 +4,4 @@
 git push
 
 # Push to Gitlab
-git push gitlab main
+git push gitlab master
